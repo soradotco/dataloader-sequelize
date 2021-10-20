@@ -382,7 +382,8 @@ function shimBelongsToMany(target) {
 }
 
 function activeClsTransaction() {
-  if (/^[45]|^github:soradotco\/sequelize#v4/.test(Sequelize.version)) {
+  // if (/^[45]|^github:soradotco\/sequelize#v4/.test(Sequelize.version)) {
+  if (true) { // hard coding to true for compatibility with Sora's sequelize version
     if (Sequelize._cls && Sequelize._cls.get('transaction')) {
       return true;
     }
@@ -396,7 +397,8 @@ export const EXPECTED_OPTIONS_KEY = 'dataloader_sequelize_context';
 export function createContext(sequelize, options = {}) {
   const loaders = {};
 
-  shimModel(/^[45]|^github:soradotco\/sequelize#v4/.test(sequelize.constructor.version) ? // v3 vs v4
+  // shimModel(/^[45]|^github:soradotco\/sequelize#v4/.test(sequelize.constructor.version) ? // v3 vs v4
+  shimModel(true ? // hard coding to true for compatibility with Sora's sequelize version
     sequelize.constructor.Model : sequelize.constructor.Model.prototype);
   shimBelongsTo(sequelize.constructor.Association.BelongsTo.prototype);
   shimHasOne(sequelize.constructor.Association.HasOne.prototype);
@@ -445,7 +447,8 @@ export function createContext(sequelize, options = {}) {
 }
 
 export function removeContext(sequelize) {
-  const Model = /^[45]|^github:soradotco\/sequelize#v4/.test(sequelize.constructor.version) ? // v3 vs v4
+  // const Model = /^[45]|^github:soradotco\/sequelize#v4/.test(sequelize.constructor.version) ? // v3 vs v4
+  const Model = true ? // hard coding to true for compatibility with Sora's sequelize version
     sequelize.constructor.Model : sequelize.constructor.Model.prototype;
 
   shimmer.massUnwrap(Model, methods(Sequelize.version).findByPk);
